@@ -1,5 +1,0 @@
-name: BungeeUserManager
-main: net.bungeeusermanager.BungeeUserManager
-version: 1.0
-author: Team Sneakymouse
-description: A bungee plugin used to manage users across a bungeecord network.
