@@ -6,17 +6,18 @@ import net.md_5.bungee.api.chat.TextComponent
 import net.md_5.bungee.api.plugin.Command
 import net.md_5.bungee.api.plugin.TabExecutor
 
-class UnbanbungeeCommand(private val plugin: BungeeUserManager) :
-        Command("unbanbungee"), TabExecutor {
+class CommandBan(private val plugin: BungeeUserManager) : Command("ban"), TabExecutor {
     override fun execute(sender: CommandSender, args: Array<String>) {
-        if (args.size != 1) {
-            sender.sendMessage(TextComponent("Usage: /unbanbungee <username>"))
+        if (args.size < 2) {
+            sender.sendMessage(TextComponent("Usage: /banbungee <username> <reason>"))
             return
         }
         val username = args[0]
+        val reason = args.slice(1 until args.size).joinToString(" ")
 
-        // Logic to unban user and remove from Pocketbase
-        sender.sendMessage(TextComponent("$username has been unbanned"))
+        // Logic to ban user and store in Pocketbase
+
+        sender.sendMessage(TextComponent("$username has been banned for: $reason"))
     }
 
     override fun onTabComplete(sender: CommandSender, args: Array<String>): List<String> {
