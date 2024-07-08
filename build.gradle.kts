@@ -12,6 +12,8 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     compileOnly("net.md-5:bungeecord-api:1.20-R0.1")
+	implementation("com.squareup.okhttp3:okhttp:4.9.3")
+	implementation("org.json:json:20211205")
 }
 
 java {
