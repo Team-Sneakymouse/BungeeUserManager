@@ -9,6 +9,7 @@ import org.json.JSONObject
 
 class PocketbaseManager {
     var authToken: String = ""
+    var spoofingMap: MutableMap<String, String>? = null
 
     /** Get a PocketBase auth token. Only run this asynchronously! */
     @Synchronized
@@ -51,8 +52,39 @@ class PocketbaseManager {
     @Synchronized
     fun addConnection(players: List<ProxiedPlayer>) {
         players.forEach {
-            val uuid = it.uniqueId
-            val socketAddress = it.socketAddress.toString().substringAfter("/").substringBefore(":")
+            val uuid = it.uniqueId.toString()
+            val socketAddress =
+                    spoofSocketAddress(
+                            uuid,
+                            it.socketAddress.toString().substringAfter("/").substringBefore(":")
+                    )
+            println("$uuid|$socketAddress")
         }
+    }
+
+    fun spoofSocketAddress(uuid: String, socketAddress: String): String {
+        if (spoofingMap == null) {
+            val map = mutableMapOf<String, String>()
+            val regex =
+                    Regex(
+                            "^(?:(?:(?:25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\\.){3}(?:25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})\\|(?:(?:25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\\.){3}(?:25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$"
+                    )
+
+            BungeeUserManager.getInstance().getConfig().getStringList("ip-spoofing").forEach {
+                if (!regex.matches(it)) {
+                    BungeeUserManager.log(
+                            "There is an improperly formatted string in the ip-spoofing config. Please ensure that it is formatted as 'UUID|ip' or 'ip|ip', including dots and dashes: $it"
+                    )
+                } else {
+                    val split = it.split("|")
+                    map[split[0]] = split[1]
+                }
+            }
+            spoofingMap = map
+        }
+
+        val map = spoofingMap ?: return socketAddress
+
+        return map[uuid] ?: map[socketAddress] ?: socketAddress
     }
 }

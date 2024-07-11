@@ -4,3 +4,8 @@ pocketbase-url: "http://127.0.0.1:8090/api/collections/collectionIdOrName/record
 pocketbase-auth-url: "http://127.0.0.1:8090/api/admins/auth-with-password"
 pocketbase-email: ""
 pocketbase-password: ""
+
+## This list adds the option to spoof the IP's of specific users. The spoofing only happens internally within the BungeeUserManager database, and it is not passed on to the backend server or any other bungee feature.
+ip-spoofing:
+  - 00000000-0000-1000-8000-000000000000|255.255.255.255
+  - 255.255.255.255|255.255.255.255
