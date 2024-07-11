@@ -58,7 +58,6 @@ class PocketbaseManager {
                             uuid,
                             it.socketAddress.toString().substringAfter("/").substringBefore(":")
                     )
-            println("$uuid|$socketAddress")
         }
     }
 
@@ -73,7 +72,7 @@ class PocketbaseManager {
             BungeeUserManager.getInstance().getConfig().getStringList("ip-spoofing").forEach {
                 if (!regex.matches(it)) {
                     BungeeUserManager.log(
-                            "There is an improperly formatted string in the ip-spoofing config. Please ensure that it is formatted as 'UUID|ip' or 'ip|ip', including dots and dashes: $it"
+                            "There is an improperly formatted string in the ip-spoofing config. Please ensure that it is formatted as 'UUID|ip' or 'ip|ip', including dots and dashes: '$it'"
                     )
                 } else {
                     val split = it.split("|")
