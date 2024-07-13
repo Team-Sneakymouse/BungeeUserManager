@@ -1,6 +1,5 @@
 package net.bungeeusermanager
 
-import kotlin.collections.listOf
 import net.bungeeusermanager.commands.CommandBan
 import net.bungeeusermanager.commands.CommandUnban
 import net.bungeeusermanager.util.PocketbaseManager
@@ -29,6 +28,7 @@ class BungeeUserManager : Plugin() {
     }
 
     override fun onDisable() {
+        pocketBaseManager.saveQueueToFile()
         log("BungeeUserManager has been disabled")
     }
 
@@ -61,7 +61,7 @@ class BungeeUserManager : Plugin() {
 class ConnectionListener : Listener {
     @EventHandler
     fun onServerConnect(event: ServerConnectEvent) {
-        BungeeUserManager.getPocketbaseManager().addConnection(listOf(event.player))
+        BungeeUserManager.getPocketbaseManager().queueNewConnection(event.player)
         // event.setCancelled(true)
         // event.player.disconnect(TextComponent("Test Message"))
     }
